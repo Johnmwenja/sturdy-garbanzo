@@ -1,0 +1,35 @@
+#include <stdio.h>
+
+struct Student {
+    char name[50];
+    float marks;
+};
+
+int main() {
+    int n;
+    FILE *file;
+
+    printf("Enter number of students: ");
+    scanf("%d", &n);
+    
+    // Open file in append mode
+    file = fopen("students.txt", "a");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+
+    // Input student data
+    for (int i = 0; i < n; i++) {
+        struct Student student;
+        printf("Enter name of student %d: ", i + 1);
+        scanf("%s", student.name);
+        printf("Enter marks of student %d: ", i + 1);
+        scanf("%f", &student.marks);
+        fprintf(file, "%s %.2f\n", student.name, student.marks);
+    }
+
+    fclose(file);
+    printf("Data successfully appended to students.txt\n");
+    return 0;
+}

@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_STUDENTS 5
+
+struct Student {
+    char name[50];
+    float marks;
+};
+
+int main() {
+    struct Student students[MAX_STUDENTS];
+    FILE *file;
+
+    // Input student data
+    for (int i = 0; i < MAX_STUDENTS; i++) {
+        printf("Enter name of student %d: ", i + 1);
+        scanf("%s", students[i].name);
+        printf("Enter marks of student %d: ", i + 1);
+        scanf("%f", &students[i].marks);
+    }
+
+    // Write to file
+    file = fopen("students.dat", "wb");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+    fwrite(students, sizeof(struct Student), MAX_STUDENTS, file);
+    fclose(file);
+    printf("Data successfully written to students.dat\n");
+
+    // Read from file
+    struct Student read_students[MAX_STUDENTS];
+    file = fopen("students.dat", "rb");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return 1;
+    }
+    fread(read_students, sizeof(struct Student), MAX_STUDENTS, file);
+    fclose(file);
+
+    // Display read data
+    printf("Data read from students.dat:\n");
+    for (int i = 0; i < MAX_STUDENTS; i++) {
+        printf("Name: %s, Marks: %.2f\n", read_students[i].name, read_students[i].marks);
+    }
+
+    return 0;
+}
